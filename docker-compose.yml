@@ -1,0 +1,54 @@
+services:
+  solr:
+    image: solr:latest
+    container_name: solr
+    ports:
+      - "8983:8983"
+    volumes:
+      - ./solr_data:/var/solr
+      - ./solr_config/solrconfig.xml:/var/solr/data/mycore/conf/solrconfig.xml
+
+    environment:
+      - SOLR_HOME=/var/solr/data
+    command:
+      - solr-precreate
+      - mycore   # numele unui core implicit creat la start
+      - /myconfig
+
+  nginx:
+    image: nginx:stable
+    container_name: nginx
+    hostname: nginx
+    volumes:
+      - ./solr_test:/var/www/html
+      - ./docker/nginx/local/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    ports:
+      - 8001:80
+
+  php:
+    build:
+      context: ./docker/php
+    user: "${UID}:${GID}"
+    environment:
+      UID: ${UID}
+      GID: ${GID}
+      XDEBUG_MODE: debug
+      XDEBUG_CONFIG: client_host=host.docker.internal idekey=PHPSTORM
+      PHP_IDE_CONFIG: serverName=docker
+
+
+    container_name: php
+    hostname: php
+    working_dir: /var/www/html
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    ports:
+      - 8002:8000
+
+    volumes:
+      - ./solr_test:/var/www/html
+      #- ./config/php.ini:/opt/bitnami/php/etc/php.ini

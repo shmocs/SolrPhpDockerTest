@@ -1,0 +1,15 @@
+<add>
+    <doc>
+        <field name="id">1</field>
+        <field name="name">Laptop Lenovo</field>
+        <field name="category">Electronics</field>
+        <field name="price">4500.50</field>
+    </doc>
+
+    <doc>
+        <field name="id">2</field>
+        <field name="name">Samsung Galaxy S24</field>
+        <field name="category">Mobile</field>
+        <field name="price">3999.99</field>
+    </doc>
+</add>
