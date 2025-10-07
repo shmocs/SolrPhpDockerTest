@@ -13,7 +13,6 @@ services:
     command:
       - solr-precreate
       - mycore   # numele unui core implicit creat la start
-      - /myconfig
 
   orientdb:
     image: orientdb:latest
